@@ -4,4 +4,15 @@ c:\users\дима\documents\visual studio 2015\Projects\NeuralNetwork\NeuralNetw
 c:\users\дима\documents\visual studio 2015\Projects\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.pdb
 c:\users\дима\documents\visual studio 2015\Projects\NeuralNetwork\NeuralNetwork\bin\Debug\MathNet.Numerics.dll
 c:\users\дима\documents\visual studio 2015\Projects\NeuralNetwork\NeuralNetwork\bin\Debug\MathNet.Numerics.xml
-C:\Users\дима\documents\visual studio 2015\Projects\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.csprojResolveAssemblyReference.cache
+C:\Users\дима\Documents\Visual Studio 2015\Projects\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.csprojAssemblyReference.cache
+C:\Users\дима\Documents\Visual Studio 2015\Projects\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.csproj.CoreCompileInputs.cache
+C:\Users\дима\Documents\Visual Studio 2015\Projects\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.csproj.CopyComplete
+C:\Users\asus\source\repos\NeuralNetwork\NeuralNetwork\bin\Debug\NeuralNetwork.dll
+C:\Users\asus\source\repos\NeuralNetwork\NeuralNetwork\bin\Debug\NeuralNetwork.pdb
+C:\Users\asus\source\repos\NeuralNetwork\NeuralNetwork\bin\Debug\MathNet.Numerics.dll
+C:\Users\asus\source\repos\NeuralNetwork\NeuralNetwork\bin\Debug\MathNet.Numerics.xml
+C:\Users\asus\source\repos\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.csprojAssemblyReference.cache
+C:\Users\asus\source\repos\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.csproj.CoreCompileInputs.cache
+C:\Users\asus\source\repos\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.csproj.CopyComplete
+C:\Users\asus\source\repos\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.dll
+C:\Users\asus\source\repos\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.pdb

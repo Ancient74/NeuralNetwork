@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using NeuralNetwork;
 using FlappyBird.GeneticAlg;
 using GeneticAlgorithm;
+using System;
 
 namespace FlappyBird
 {
@@ -21,7 +22,7 @@ namespace FlappyBird
 
         Bird testBird;
 
-        GeneticAlgorithmUpdateable<MathNet.Numerics.LinearAlgebra.Matrix<float>> GA;
+        GeneticAlgorithmUpdateable<MathNet.Numerics.LinearAlgebra.Matrix<float>,Player> GA;
 
         SpriteFont font;
        
@@ -40,15 +41,8 @@ namespace FlappyBird
             IsMouseVisible = true;
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             Width = GraphicsDevice.Viewport.Width;
             Height = GraphicsDevice.Viewport.Height;
             birdSize = new Point(15, 15);      
@@ -58,14 +52,8 @@ namespace FlappyBird
             pipeWidth = 100;
             base.Initialize();
         }
-
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             var s = birdSize.X * birdSize.Y;
             Color[] BirdColors = new Color[s];
@@ -84,18 +72,15 @@ namespace FlappyBird
             pipeTexture.SetData<Color>(pipesCols);
             testBird.BirdTexture = birdTexture;
             font = Content.Load<SpriteFont>("File");
+            Func<Player>createFunc= () =>{
+                return new Player(3, 2, 1, birdTexture, Width, Height, birdSize.X, birdSize.Y, pipes);
+            };
             GA =
-                new GeneticAlgorithmUpdateable<MathNet.Numerics.LinearAlgebra.Matrix<float>>(100, 0.2f, 5, typeof(Player), 3, 2, 1, birdTexture, Width, Height, birdSize.X, birdSize.Y, pipes);
-            // TODO: use this.Content to load your game content here
+                new GeneticAlgorithmUpdateable<MathNet.Numerics.LinearAlgebra.Matrix<float>,Player>(100, 0.2f, 10, createFunc);
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         public void Restart()
@@ -133,36 +118,7 @@ namespace FlappyBird
             }
             GA.Update(gameTime);
             if (GA.TryToGo()) { Restart(); }
-            
-            /*
-            var newState = Keyboard.GetState();
-            if (!testBird.IsDead)
-            {
-                if (old.IsKeyUp(Keys.Space) && newState.IsKeyDown(Keys.Space))
-                {
-                    testBird.Flap();
-                }
-                old = newState;
-              
-                for (int i = 0; i < pipes.Count; i++)
-                {
-                    if (!testBird.IsDead && (testBird.IsCollide(pipes[i].Bottom) || testBird.IsCollide(pipes[i].Top)) )//|| testBird.Position.Y + testBird.Size.Y >= Height)
-                    {
-                        testBird.IsDead = true;
-                    }
-                }
-            }
-            testBird.Update(gameTime);
-            
-            foreach (var p in pipes)
-            {
-                if (!p.Passed && testBird.IsCollide(p.PointRect))
-                {
-                    p.Passed = true;
-                    testBird.Score++;
-                }
-            }
-            */
+           
             for (int i = 0; i < pipes.Count; i++)
             {
                 if (pipes[i].X + pipes[i].PipeWidth < 0)
@@ -174,34 +130,17 @@ namespace FlappyBird
             }          
 
             
-            // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
-
-
-        /*
-                public void NewGame()
-                {
-                    bird = new Bird(Width, Height, birdSize.X, birdSize.Y);
-                    bird.BirdTexture = birdTexture;
-                    pipes.Clear();
-                    index++;
-                }
-                */
         int score=0;
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+       
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            //testBird.Draw(spriteBatch);
             GA.Draw(spriteBatch);
 
             foreach (var p in pipes)
@@ -209,16 +148,8 @@ namespace FlappyBird
                 p.Draw(spriteBatch);
             }
             spriteBatch.DrawString(font, "Generation = " + GA.CurrentGeneration, new Vector2(50, 50), Color.Cyan);
-
-
-            //spriteBatch.Draw(pipeTexture, pipes[0].PointRect, Color.Green);
-            // spriteBatch.DrawString(font, "Player1 Xnorm = " + GeneticAlg.Population[0].Xnorm + "\nYnorm = " + GeneticAlg.Population[0].Ynorm, new Vector2(50, 100), Color.Cyan);
             spriteBatch.DrawString(font, score.ToString(), new Vector2(Width / 2, 50), Color.Cyan);
-
-            //spriteBatch.DrawString(font, "Score = " + testBird.Score+"\nIsDead = "+testBird.IsDead, new Vector2(50, 50), Color.Cyan);
-
             spriteBatch.End();
-
             base.Draw(gameTime);
         }
         public Pipe GetNearPipe()

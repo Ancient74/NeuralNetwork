@@ -6,33 +6,27 @@ using System.Threading.Tasks;
 
 namespace GeneticAlgorithm
 {
-    public class GeneticAlgorithm<T> : IGeneticAlgorithm
+    public class GeneticAlgorithm<T,V> : IGeneticAlgorithm<T,V> where V : IEvolutionable<T>
     {
-        public List<IEvolutionable<T>> Population { get; set; }
+        public List<V> Population { get; set; }
 
         public float MutationRate { get; set; }
         public int CurrentGeneration { get; set; }
-        public Type TypeOfEvolutionableObject { get; set; }
-        public object[] InstanceArgs { get; set; }
+        public Func<V> CreateFunc { get; set; }
         public int Winners { get; set; }
         public float[] Fitnesses { get; set; }    
 
-        public GeneticAlgorithm(int populationCount, float mutationRate, int winnersCount, Type evolutionAble, params object[] args)
+        public GeneticAlgorithm(int populationCount, float mutationRate, int winnersCount, Func<V>CreateFunc)
         {
-            if (evolutionAble is IEvolutionable<T>)
-            {
                 this.MutationRate = mutationRate;
-                Population = new List<IEvolutionable<T>>();
+                Population = new List<V>();
                 for (int i = 0; i < populationCount; i++)
                 {
-                    Population.Add((IEvolutionable<T>)Activator.CreateInstance(evolutionAble, args));
+                    Population.Add(CreateFunc());
                 }
-                TypeOfEvolutionableObject = evolutionAble;
-                InstanceArgs = args;
+                
                 Winners = winnersCount;
                 Fitnesses = new float[populationCount];
-            }
-            else throw new ArgumentException("Type must implement IEvolutionable interface");
         }
 
         /// <summary>
@@ -54,7 +48,7 @@ namespace GeneticAlgorithm
         /// </summary>
         public void Evolve()
         {
-            var newPopulation = new List<IEvolutionable<T>>();
+            var newPopulation = new List<V>();
             for (int i = 0; i < Winners; i++)
             {
                 newPopulation.Add(Population[i]);
@@ -62,7 +56,7 @@ namespace GeneticAlgorithm
             Random r = new Random();
             for (int i = Winners; i < Population.Count; i++)
             {
-                var child = (IEvolutionable<T>)Activator.CreateInstance(TypeOfEvolutionableObject, InstanceArgs);
+                V child = CreateFunc();
                 if (i == Winners)
                 {
                     var ParentA = Population[0];

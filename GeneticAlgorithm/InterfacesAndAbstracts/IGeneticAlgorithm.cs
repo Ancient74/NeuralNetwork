@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace GeneticAlgorithm
 {
-    public interface IGeneticAlgorithm
+    public interface IGeneticAlgorithm<T,V>
     {
         float MutationRate { get; set; }
         int CurrentGeneration { get; set; }
-        Type TypeOfEvolutionableObject { get;  set; }
-        object[] InstanceArgs { get;  set; }
+        Func<V> CreateFunc { get; set; }
         int Winners { get; set; }
 
         float[] Fitnesses { get; set; }

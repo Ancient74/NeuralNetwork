@@ -1,8 +1,6 @@
 ﻿using System;
 using MathNet.Numerics.LinearAlgebra;
-using System.Xml.Serialization;
-using System.IO;
-using MathNet.Numerics.Distributions;
+
 
 namespace NeuralNetwork
 {

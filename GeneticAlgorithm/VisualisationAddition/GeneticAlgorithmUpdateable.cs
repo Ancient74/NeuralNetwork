@@ -8,27 +8,25 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GeneticAlgorithm
 {
-    public class GeneticAlgorithmUpdateable<T> : IGeneticAlgorithm, IUpdateable
+    public class GeneticAlgorithmUpdateable<T,V> : IGeneticAlgorithm<T,V>, IUpdateable where V : IVisualisationable<T>
     {
-        public List<IVisualisationable<T>> Population { get; set; }
+        public List<V> Population { get; set; }
 
         public float MutationRate { get; set; }
         public int CurrentGeneration { get; set; }
-        public Type TypeOfEvolutionableObject { get; set; }
-        public object[] InstanceArgs { get; set; }
         public int Winners { get; set; }
         public float[] Fitnesses { get; set; }
+        public Func<V> CreateFunc { get; set; }
 
-        public GeneticAlgorithmUpdateable(int populationCount, float mutationRate, int winnersCount, Type evolutionAble, params object[] args)
+        public GeneticAlgorithmUpdateable(int populationCount, float mutationRate, int winnersCount, Func<V>CreateFunction)
         {
             this.MutationRate = mutationRate;
-            Population = new List<IVisualisationable<T>>();
+            CreateFunc = CreateFunction;
+            Population = new List<V>();
             for (int i = 0; i < populationCount; i++)
             {
-                Population.Add((IVisualisationable<T>)Activator.CreateInstance(evolutionAble, args));
+                Population.Add(CreateFunc());
             }
-            TypeOfEvolutionableObject = evolutionAble;
-            InstanceArgs = args;
             Winners = winnersCount;
             Fitnesses = new float[populationCount];
         }
@@ -53,7 +51,7 @@ namespace GeneticAlgorithm
 
         public void Evolve()
         {
-            var newPopulation = new List<IVisualisationable<T>>();
+            var newPopulation = new List<V>();
             for (int i = 0; i < Winners; i++)
             {
                 newPopulation.Add(Population[i]);
@@ -61,7 +59,7 @@ namespace GeneticAlgorithm
             Random r = new Random();
             for (int i = Winners; i < Population.Count; i++)
             {
-                var child = (IVisualisationable<T>)Activator.CreateInstance(TypeOfEvolutionableObject, InstanceArgs);
+                V child = CreateFunc();
                 if (i == Winners)
                 {
                     var ParentA = Population[0];
